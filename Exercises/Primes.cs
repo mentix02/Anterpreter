@@ -28,8 +28,6 @@
                     Console.WriteLine("Please enter a valid first number according to given constraints!");
             } while (!firstNumValid || lower <= 1 || lower > 999);
 
-            Console.WriteLine();
-
             do
             {
                 Console.Write("Enter the second number: ");

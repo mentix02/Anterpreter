@@ -115,7 +115,7 @@
 
     public override bool Equals(object obj)
     {
-        Point_ p = (Point_) obj; // Usually a check for types precdes this cast
+        Point p = (Point) obj; // Usually a check for types precdes this cast
         return (X == p.X) && (Y == p.Y);
     }
 }

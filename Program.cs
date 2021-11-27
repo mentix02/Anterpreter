@@ -4,8 +4,7 @@
     {
         static void Main()
         {
-            Interpreter.RegisterExercises();
-            Interpreter.DisplayBanner();
+            Interpreter.Initialize();
             Interpreter.RunLoop();
         }
     }

@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Anterpreter.Commands;
+using Anterpreter.Exercises;
 
 namespace Anterpreter
 {
@@ -9,12 +11,13 @@ namespace Anterpreter
     static class Interpreter
     {
 
-        private static readonly SortedList<uint, IExercise> ExerciseStore = new();
+        public static readonly SortedList<uint, IExercise> ExerciseStore = new();
+        public static readonly Dictionary<string, ICommand> CommandStore = new();
+
+        private static readonly string CommandsNamespace = "Anterpreter.Commands";
         private static readonly string ExercisesNamespace = "Anterpreter.Exercises";
 
         /*
-         * Parse reads an input string and returns an Exercise.
-         * 
          * If the input provided is an unsigned integer, we look in the
          * ExerciseStore by key and return the result.
          * 
@@ -22,7 +25,7 @@ namespace Anterpreter
          * lowercased name of the IExercise instance to the input and
          * return if a match if found.
          */
-        private static IExercise Parse(string input)
+        private static IExercise GetExercise(string input)
         {
             if (input == null) return null;
 
@@ -43,89 +46,100 @@ namespace Anterpreter
                     if (exercise.GetType().Name.ToLower().Equals(input))
                         return exercise;
                 }
+
                 return null;
             }
+        }
+
+        private static ICommand GetCommand(string input)
+        {
+            if (CommandStore.ContainsKey(input))
+                return CommandStore[input];
+            foreach (var commandKv in CommandStore)
+                if (commandKv.Key.StartsWith(input))
+                    return commandKv.Value;
+            return null;
         }
 
         private static string GetInput(string prompt)
         {
             Console.Write(prompt);
-            string input = Console.ReadLine().ToLower();
+            string input = Console.ReadLine().ToLower().Trim();
             return input;
         }
 
-        private static void DisplayExercises()
-        {
-            Console.WriteLine("------------------");
-            foreach (var exercise in ExerciseStore)
-            {
-                Console.WriteLine($"{exercise.Key}. {exercise.Value.GetType().Name.ToLower()}");
-            }
-            Console.WriteLine("------------------");
-        }
-
         private static void RegisterExercise(IExercise exercise) { ExerciseStore.Add(exercise.Number(), exercise); }
+
+        private static void RegisterCommand(ICommand command) { CommandStore.Add(command.GetType().Name.ToLower(), command); }
 
         /*
          * This method performs some meta black magic.
          * 
          * It gets a list of all types in the currently executing assembly
          * and then filters them based on their namespace - if the namespace
-         * equals the ExercisesNamespace field, we call CreateInstance on
-         * this Type and register it via RegisterExercise by casting the
-         * recently created instance into IExercise.
+         * equals either the ExercisesNamespace or CommandsNamespace field, we
+         * call CreateInstance on this Type and register it via an appropriate method
+         * by casting the recently created instance into the apprpriate iterface.
          * 
          * As I said, black magic.
          */
-        public static void RegisterExercises()
+        public static void Initialize()
         {
-            object exercise;
+            object exercise, command;
             var types = Assembly
                 .GetExecutingAssembly()
                 .GetTypes()
-                .Where(t => string.Equals(t.Namespace, ExercisesNamespace) && typeof(IExercise).IsAssignableFrom(t));
+                .Where(
+                    t => string.Equals(t.Namespace, ExercisesNamespace) ||
+                         string.Equals(t.Namespace, CommandsNamespace)
+                );
             foreach (Type type in types)
             {
-                exercise = Activator.CreateInstance(type);
-                RegisterExercise((IExercise) exercise);
-            }
+                if (typeof(IExercise).IsAssignableFrom(type))
+                {
+                    exercise = Activator.CreateInstance(type);
+                    RegisterExercise((IExercise)exercise);
+                }
+                else if (typeof(ICommand).IsAssignableFrom(type))
+                {
+                    command = Activator.CreateInstance(type);
+                    RegisterCommand((ICommand)command);
+                }
+            }   
         }
 
-        public static void RunLoop(string prompt = "> ")
+        public static void RunLoop(string prompt = "==> ")
         {
             string input;
+            ICommand command;
             IExercise exercise;
 
-            DisplayExercises();
+            Banner.Run();
+            Help.Run();
+            ListExercises.Run();
 
             while (true)
             {
 
                 input = GetInput(prompt);
 
-                if (input.Equals("q") || input.Equals("quit"))
-                    break;
+                command = GetCommand(input);
 
-                exercise = Parse(input);
+                if (command != null)
+                {
+                    command.Run();
+                    continue;
+                }
+
+                exercise = GetExercise(input);
 
                 if (exercise == null)
                     Console.WriteLine("Invalid input provided. Please try again.");
                 else
                     exercise.Run();
+
             }
 
-            Console.WriteLine("Bye!");
-        }
-
-        public static void DisplayBanner()
-        {
-            Console.WriteLine(@"
-   ___        __                       __         
-  / _ | ___  / /____ _______  _______ / /____ ____
- / __ |/ _ \/ __/ -_) __/ _ \/ __/ -_) __/ -_) __/
-/_/ |_/_//_/\__/\__/_/ / .__/_/  \__/\__/\__/_/   
-                      /_/                         
-");
         }
 
     }
