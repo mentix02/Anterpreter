@@ -14,16 +14,24 @@
         public string Quack();
         public DuckType Type { get; }
 
+        public uint Wings { get; set; }
+        public uint Weight { get; set; }
+
         public void ShowDetails()
         {
             Console.WriteLine($"Type: {Type}");
             Console.WriteLine($"Fly(): {Fly()}");
+            Console.WriteLine($"Wings: {Wings}");
+            Console.WriteLine($"Weight: {Weight} g");
             Console.WriteLine($"Quack(): {Quack()}");
         }
     }
 
     class RubberDuck : IDuck
     {
+
+        public uint Wings { get; set; }
+        public uint Weight { get; set; }
 
         public string Fly()
         {
@@ -42,6 +50,9 @@
     class MallardDuck : IDuck
     {
 
+        public uint Wings { get; set; }
+        public uint Weight { get; set; }
+
         public string Fly()
         {
             return "Flies fast";
@@ -58,6 +69,9 @@
 
     class RedHeadDuck : IDuck
     {
+
+        public uint Wings { get; set; }
+        public uint Weight { get; set; }
 
         public string Fly()
         {
@@ -82,7 +96,9 @@
 
         public void Run()
         {
+            Console.Write("Creating a mallard duck... ");
             IDuck duck = new MallardDuck();
+            Console.WriteLine("done");
             duck.ShowDetails();
         }
 
