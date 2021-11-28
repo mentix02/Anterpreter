@@ -92,7 +92,7 @@ namespace Anterpreter.Exercises
 
             Console.WriteLine("Printing according to weight -");
             foreach (var duck in pond)
-                Console.WriteLine($"#{++idx} weight - {duck.Weight}");
+                Console.WriteLine($"#{++idx} weight - {duck.Weight} g");
 
             Console.WriteLine("\nPrinting according to wings -");
             var wingOrderEnumerator = pond.GetWingOrderEnumerator();
