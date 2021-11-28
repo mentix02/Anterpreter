@@ -3,14 +3,21 @@
 namespace Anterpreter.Exercises
 {
 
-    internal abstract class Equipment
+    enum EquipmentType
+    {
+        MOBILE,
+        IMMOBILE,
+    }
+
+    internal abstract class AbstractEquipment
     {
 
+        protected EquipmentType Type;
         public string Name { get; set; }
         public string Description { get; set; }
         public uint DistanceMoved { get; set; } = 0;
         public uint MaintenanceCost { get; set; } = 0;
-
+        
         protected abstract void IncreaseMaintenanceCost();
 
         private void IncreaseDistanceMoved(uint distance)
@@ -43,10 +50,15 @@ namespace Anterpreter.Exercises
 
     }
 
-    internal class MobileEquipment : Equipment
+    internal class MobileEquipment : AbstractEquipment
     {
 
         public uint Wheels { get; set; }
+
+        public MobileEquipment()
+        {
+            this.Type = EquipmentType.MOBILE;
+        }
 
         public override string GetDetails()
         {
@@ -64,9 +76,15 @@ namespace Anterpreter.Exercises
         }
     }
 
-    internal class ImmobileEquipment : Equipment
+    internal class ImmobileEquipment : AbstractEquipment
     {
+
         public uint Weight { get; set; }
+
+        public ImmobileEquipment()
+        {
+            this.Type = EquipmentType.IMMOBILE;
+        }
 
         public override string GetDetails()
         {

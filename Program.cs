@@ -4,8 +4,8 @@
     {
         static void Main()
         {
-            Interpreter.Initialize();
-            Interpreter.RunLoop();
+            Anterpreter.Initialize();
+            Anterpreter.RunLoop();
         }
     }
 }

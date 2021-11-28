@@ -6,7 +6,7 @@
         public static void Run()
         {
             Console.WriteLine("Commands -");
-            foreach (var kvCommand in Interpreter.CommandStore)
+            foreach (var kvCommand in Anterpreter.CommandStore)
                 Console.WriteLine($"- {kvCommand.Key}");
         }
 

@@ -52,7 +52,7 @@
             return "Quacks loud";
         }
 
-        public DuckType Type { get; } = DuckType.Rubber;
+        public DuckType Type { get; } = DuckType.Mallard;
 
     }
 

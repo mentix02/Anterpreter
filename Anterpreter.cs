@@ -5,10 +5,11 @@ using Anterpreter.Exercises;
 namespace Anterpreter
 {
     /* 
-     * Interpreter fulfills two major requirements of the assignment - 
-     *      1. Keeps track of a list of all Exercises 
+     * Interpreter fulfills some major requirements of the assignment - 
+     *      1. Keeps track of a list of all IExercise implementors
+     *      2. Keeps track of a list of all ICommand implementors
      */
-    static class Interpreter
+    static class Anterpreter
     {
 
         public static readonly SortedList<uint, IExercise> ExerciseStore = new();
@@ -35,18 +36,12 @@ namespace Anterpreter
                 return ExerciseStore.GetValueOrDefault(option);
             else
             {
-
-                // uint.TryParse succeeded but exercise # does not exist.
-                if (isUint)
-                    return null;
-
                 // User provided a string - could be an exercise name
                 foreach (IExercise exercise in ExerciseStore.Values)
                 {
                     if (exercise.GetType().Name.ToLower().Equals(input))
                         return exercise;
                 }
-
                 return null;
             }
         }
@@ -108,7 +103,7 @@ namespace Anterpreter
             }   
         }
 
-        public static void RunLoop(string prompt = "==> ")
+        public static void RunLoop(string prompt = "> ")
         {
             string input;
             ICommand command;

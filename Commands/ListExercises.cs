@@ -6,7 +6,7 @@
         public static void Run()
         {
             Console.WriteLine("Exercises -");
-            foreach (var kvExercise in Interpreter.ExerciseStore)
+            foreach (var kvExercise in Anterpreter.ExerciseStore)
                 Console.WriteLine($"{kvExercise.Key}. {kvExercise.Value.GetType().Name.ToLower()}");
         }
 
