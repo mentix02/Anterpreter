@@ -9,10 +9,10 @@ namespace Anterpreter.Exercises
         IMMOBILE,
     }
 
-    internal abstract class AbstractEquipment
+    internal abstract class Equipment
     {
 
-        protected EquipmentType Type;
+        public EquipmentType Type;
         public string Name { get; set; }
         public string Description { get; set; }
         public uint DistanceMoved { get; set; } = 0;
@@ -50,7 +50,7 @@ namespace Anterpreter.Exercises
 
     }
 
-    internal class MobileEquipment : AbstractEquipment
+    internal class MobileEquipment : Equipment
     {
 
         public uint Wheels { get; set; }
@@ -76,7 +76,7 @@ namespace Anterpreter.Exercises
         }
     }
 
-    internal class ImmobileEquipment : AbstractEquipment
+    internal class ImmobileEquipment : Equipment
     {
 
         public uint Weight { get; set; }
@@ -112,14 +112,14 @@ namespace Anterpreter.Exercises
         public void Run()
         {
 
-            MobileEquipment car = new()
+            Equipment car = new MobileEquipment()
             {
                 Wheels = 4,
                 Name = "Jeep Compass",
                 Description = "A 5 seater SUV.",
             };
 
-            ImmobileEquipment ladder = new()
+            Equipment ladder = new ImmobileEquipment()
             {
                 Weight = 20,
                 Name = "Ladder",

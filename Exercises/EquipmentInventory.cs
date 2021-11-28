@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
 
 namespace Anterpreter.Exercises
 {
@@ -52,17 +53,17 @@ namespace Anterpreter.Exercises
             {
                 idx = ReadUint(prompt);
 
-                if (idx >= InventoryStore.EquipmentCount())
+                if (idx >= InventoryStore.GetEquipmentCount())
                     Console.WriteLine("Please enter a valid index.");
 
-            } while (idx >= InventoryStore.EquipmentCount());
+            } while (idx >= InventoryStore.GetEquipmentCount());
             return idx;
         }
 
         [InventoryCommand]
         private static void Add()
         {
-            AbstractEquipment equipment;
+            Equipment equipment;
 
             string name = ReadString("Enter equipment name: ");
 
@@ -103,7 +104,7 @@ namespace Anterpreter.Exercises
         [InventoryCommand]
         private static void Count()
         {
-            Console.WriteLine(InventoryStore.GetEquipments().Count);
+            Console.WriteLine(InventoryStore.GetEquipmentCount());
         }
 
         [InventoryCommand]
@@ -144,7 +145,7 @@ namespace Anterpreter.Exercises
         }
 
         [InventoryCommand]
-        private static void List()
+        private static void ListAll()
         {
             uint idx = 0;
             foreach (var equipment in InventoryStore.GetEquipments())
@@ -152,9 +153,42 @@ namespace Anterpreter.Exercises
         }
 
         [InventoryCommand]
-        private static void Clear()
+        private static void ListMobile()
+        {
+            foreach (var mobileEquipment in InventoryStore.GetMobileEquipments())
+                Console.WriteLine(mobileEquipment);
+        }
+
+        [InventoryCommand]
+        private static void ListImmobile()
+        {
+            foreach (var immobileEquipment in InventoryStore.GetImmobileEquipments())
+                Console.WriteLine(immobileEquipment);
+        }
+
+        [InventoryCommand]
+        private static void ClearScreen()
         {
             Console.Clear();
+        }
+
+        [InventoryCommand]
+        private static void DeleteAll()
+        {
+            Console.WriteLine($"Removed {InventoryStore.GetEquipmentCount()} items.");
+            InventoryStore.RemoveAll();
+        }
+
+        [InventoryCommand]
+        private static void DeleteMobile()
+        {
+            Console.WriteLine($"Deleted {InventoryStore.RemoveMobileEquipment()} items.");
+        }
+    
+        [InventoryCommand]
+        private static void DeleteImmobile()
+        {
+            Console.WriteLine($"Deleted {InventoryStore.RemoveImmobileEquipment()} items.");
         }
 
         [InventoryCommand]
@@ -204,7 +238,7 @@ namespace Anterpreter.Exercises
 
             do
             {
-                input = ReadString(prompt).ToLower();
+                input = ReadString(prompt).ToLower().Trim();
                 command = GetCommand(input);
 
                 if (command != null)
@@ -221,9 +255,9 @@ namespace Anterpreter.Exercises
     internal class EquipmentInventoryStore
     {
 
-        private readonly List<AbstractEquipment> Equipments = new();
+        private List<Equipment> Equipments = new();
 
-        public void AddEquipment(AbstractEquipment equipment)
+        public void AddEquipment(Equipment equipment)
         {
             Equipments.Add(equipment);
         }
@@ -233,14 +267,66 @@ namespace Anterpreter.Exercises
             Equipments.RemoveAt((int) idx);
         }
 
-        public uint EquipmentCount()
+        public void RemoveAll()
+        {
+            Equipments.Clear();
+        }
+
+        public uint GetEquipmentCount()
         {
             return (uint) Equipments.Count;
         }
 
         public bool IsEmpty()
         {
-            return EquipmentCount() == 0;
+            return GetEquipmentCount() == 0;
+        }
+
+        public uint RemoveMobileEquipment()
+        {
+            uint count = 0;
+            Equipments = Equipments
+                .Where(e =>
+                {
+                    if (e.Type != EquipmentType.MOBILE)
+                        return true;
+                    else
+                        count++;
+                    return false;
+                })
+                .ToList();
+            return count;
+        }
+
+        public uint RemoveImmobileEquipment()
+        {
+            uint count = 0;
+            Equipments = Equipments
+                .Where(e =>
+                {
+                    if (e.Type != EquipmentType.IMMOBILE)
+                        return true;
+                    else
+                        count++;
+                    return false;
+                })
+                .ToList();
+            return count;
+        }
+
+        public IEnumerable<Equipment> GetUnmovedEquipments()
+        {
+            return Equipments.Where(e => e.DistanceMoved == 0);
+        }
+
+        public IEnumerable<Equipment> GetMobileEquipments()
+        {
+            return Equipments.Where(e => e.Type == EquipmentType.MOBILE);
+        }
+
+        public IEnumerable<Equipment> GetImmobileEquipments()
+        {
+            return Equipments.Where(e => e.Type == EquipmentType.IMMOBILE);
         }
 
         public void MoveEquipment(uint idx, uint distance)
@@ -253,7 +339,7 @@ namespace Anterpreter.Exercises
             return Equipments[(int) idx].GetDetails();
         }
 
-        public List<AbstractEquipment> GetEquipments()
+        public List<Equipment> GetEquipments()
         {
             return Equipments;
         }
