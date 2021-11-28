@@ -87,6 +87,7 @@ namespace Anterpreter.Exercises {
 
         public void Run()
         {
+            
             Console.Write("Creating PriorityQueue1... ");
             var pq1 = new PriorityQueue1<string>();
             Console.WriteLine("done.");
@@ -108,9 +109,7 @@ namespace Anterpreter.Exercises {
             var count = pq1.Count();
 
             for (int i = 0; i < count; i++)
-            {
                 Console.WriteLine(pq1.Dequeue());
-            }
 
             Console.WriteLine("done.");
             Console.WriteLine($"Count: {pq1.Count()}");
