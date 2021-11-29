@@ -46,7 +46,16 @@
 
         public void Run()
         {
-            string directoryPath = "Exercises/FileOperations/";
+
+            Console.Write("Enter directory path to read from: ");
+            string directoryPath = Console.ReadLine();
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Console.WriteLine("Invalid directory path provided.");
+                return;
+            }
+
             Console.WriteLine($"Number of text files: {NumTextfiles(directoryPath)}");
 
             Console.WriteLine($"\nExtension count groups -");
