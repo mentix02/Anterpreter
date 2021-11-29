@@ -39,7 +39,17 @@ namespace Anterpreter.Exercises
             LessThanFiveDel d = IsLessThanFive;
             PrintIEnumerable(numbers.Where(n => d(n)));
 
-            // TODO: 3k, 3k + 1, 3k + 2
+            Console.WriteLine("\nFinding numbers divisible by 3: (lambda expression)");
+            PrintIEnumerable(numbers.Where(k => k % 3 == 0));
+
+            Console.WriteLine("\nFinding numbers with remainder 1 when divided by 3: (anonymous method)");
+            PrintIEnumerable(numbers.Where(delegate (int k) {
+                return k % 3 == 1;
+            }));
+
+            Func<int, bool> remainderTwoWhenDividedByThree = k => k % 3 == 2;
+            Console.WriteLine("\nFinding numbers with remainder 2 when divided by 3: (lambda expression assignment)");
+            PrintIEnumerable(numbers.Where(remainderTwoWhenDividedByThree));
 
             Console.WriteLine("\nFinding anything with anonymous delegate: ");
             PrintIEnumerable(numbers.Where(delegate (int n) {
