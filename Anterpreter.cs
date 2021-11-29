@@ -8,6 +8,7 @@ namespace Anterpreter
      * Interpreter fulfills some major requirements of the assignment - 
      *      1. Keeps track of a list of all IExercise implementors
      *      2. Keeps track of a list of all ICommand implementors
+     *      3. Provides a shell for executing both commands and exercises
      */
     static class Anterpreter
     {

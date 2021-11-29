@@ -39,13 +39,31 @@ namespace Anterpreter.Exercises
             LessThanFiveDel d = IsLessThanFive;
             PrintIEnumerable(numbers.Where(n => d(n)));
 
+            // TODO: 3k, 3k + 1, 3k + 2
+
+            Console.WriteLine("\nFinding anything with anonymous delegate: ");
+            PrintIEnumerable(numbers.Where(delegate (int n) {
+                return true;
+            }));
+
+            FindAnythingDel findAnything = FindAnything;
+            Console.WriteLine("\nFinding anything with method group conversion: ");
+            PrintIEnumerable(numbers.Where(n => findAnything(n)));
+
         }
 
         private delegate bool LessThanFiveDel(int n);
 
+        private delegate bool FindAnythingDel(int n);
+
         private bool IsLessThanFive(int number)
         {
             return number < 5;
+        }
+
+        private bool FindAnything(int n)
+        {
+            return true;
         }
 
         private void PrintIEnumerable(IEnumerable<int> numbers)
