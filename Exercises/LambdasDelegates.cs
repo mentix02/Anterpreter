@@ -66,17 +66,17 @@ namespace Anterpreter.Exercises
 
         private delegate bool FindAnythingDel(int n);
 
-        private bool IsLessThanFive(int number)
+        private static bool IsLessThanFive(int number)
         {
             return number < 5;
         }
 
-        private bool FindAnything(int n)
+        private static bool FindAnything(int n)
         {
             return true;
         }
 
-        private void PrintIEnumerable(IEnumerable<int> numbers)
+        private static void PrintIEnumerable(IEnumerable<int> numbers)
         {
             Console.Write("[ ");
             foreach (var number in numbers)
@@ -84,7 +84,7 @@ namespace Anterpreter.Exercises
             Console.WriteLine("]");
         }
 
-        private IList<int> GetRandomIntList(int size)
+        private static IList<int> GetRandomIntList(int size)
         {
             var random = new Random();
             var list = new List<int>();

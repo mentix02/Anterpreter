@@ -3,12 +3,12 @@
     internal class FileOperations : IExercise
     {
 
-        private uint NumTextfiles(string directoryPath)
+        private static uint NumTextfiles(string directoryPath)
         {
             return (uint) Directory.EnumerateFiles(directoryPath, "*.txt").Count();
         }
 
-        private IDictionary<string, uint> GetExtensionCountGroups(string directoryPath)
+        private static IDictionary<string, uint> GetExtensionCountGroups(string directoryPath)
         {
             string extension;
             Dictionary<string, uint> extensionCountGroups = new();
@@ -23,7 +23,7 @@
             return extensionCountGroups;
         }
 
-        private IEnumerable<string> GetTop5LargestFiles(string directoryPath)
+        private static IEnumerable<string> GetTop5LargestFiles(string directoryPath)
         {
             return Directory
                 .EnumerateFiles(directoryPath)
@@ -31,7 +31,7 @@
                 .Take(5);
         }
 
-        private string GetFileWithMaximumLength(string directoryPath)
+        private static string GetFileWithMaximumLength(string directoryPath)
         {
             return Directory
                 .EnumerateFiles(directoryPath)

@@ -28,11 +28,7 @@
 
         protected virtual void OnProductMarkedDefective(ProductMarkDefectiveEventArgs e)
         {
-            EventHandler<ProductMarkDefectiveEventArgs> handler = ProductMarkedDefective;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            ProductMarkedDefective?.Invoke(this, e);
         }
 
         public event EventHandler<ProductMarkDefectiveEventArgs> ProductMarkedDefective;
