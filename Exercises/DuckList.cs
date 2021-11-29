@@ -88,7 +88,7 @@ namespace Anterpreter.Exercises
 
             for (int i = 0; i < 10; i++) pond.Add(GetRandomDuck());
 
-            Console.Write("done\n");
+            Console.WriteLine("done.");
 
             Console.WriteLine("Printing according to weight -");
             foreach (var duck in pond)

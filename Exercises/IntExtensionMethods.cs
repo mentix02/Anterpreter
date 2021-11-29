@@ -33,7 +33,7 @@ namespace Anterpreter.Exercises
 
     }
 
-    internal class ExtensionMethods : IExercise
+    internal class IntExtensionMethods : IExercise
     {
 
         public uint Number()

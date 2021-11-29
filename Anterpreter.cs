@@ -28,7 +28,8 @@ namespace Anterpreter
          */
         private static IExercise GetExercise(string input)
         {
-            if (input == null) return null;
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
 
             bool isUint = uint.TryParse(input, out uint option);
 
@@ -48,11 +49,17 @@ namespace Anterpreter
 
         private static ICommand GetCommand(string input)
         {
+
+            if (string.IsNullOrWhiteSpace(input))
+                return null;
+
             if (CommandStore.ContainsKey(input))
                 return CommandStore[input];
+
             foreach (var commandKv in CommandStore)
                 if (commandKv.Key.StartsWith(input))
                     return commandKv.Value;
+
             return null;
         }
 
@@ -128,10 +135,12 @@ namespace Anterpreter
 
                 exercise = GetExercise(input);
 
-                if (exercise == null)
-                    Console.WriteLine("Invalid input provided. Please try again.");
-                else
+                if (exercise != null)
                     exercise.Run();
+                else if (string.IsNullOrWhiteSpace(input))
+                    continue;
+                else
+                    Console.WriteLine("Invalid input provided. Please try again.");
 
             }
 
