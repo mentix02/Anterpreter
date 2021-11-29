@@ -12,5 +12,10 @@
         {
             Quit.Run();
         }
+
+        public string Info()
+        {
+            return "Exits Anterpreter shell";
+        }
     }
 }

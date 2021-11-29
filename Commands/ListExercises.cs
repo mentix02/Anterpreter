@@ -20,5 +20,10 @@
         {
             ListExercises.Run();
         }
+
+        public string Info()
+        {
+            return "Lists all exercises";
+        }
     }
 }

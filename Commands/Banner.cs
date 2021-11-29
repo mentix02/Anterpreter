@@ -19,5 +19,10 @@
             Banner.Run();
         }
 
+        public string Info()
+        {
+            return "Prints the banner";
+        }
+
     }
 }

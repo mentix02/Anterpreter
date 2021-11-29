@@ -7,12 +7,17 @@
         {
             Console.WriteLine("Commands -");
             foreach (var kvCommand in Anterpreter.CommandStore)
-                Console.WriteLine($"- {kvCommand.Key}");
+                Console.WriteLine($"- {kvCommand.Key}: {kvCommand.Value.Info()}");
         }
 
         void ICommand.Run()
         {
             Help.Run();
+        }
+
+        public string Info()
+        {
+            return "Lists all commands";
         }
 
     }

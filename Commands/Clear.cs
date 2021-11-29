@@ -11,5 +11,10 @@
         {
             Clear.Run();
         }
+
+        public string Info()
+        {
+            return "Clears the screen";
+        }
     }
 }

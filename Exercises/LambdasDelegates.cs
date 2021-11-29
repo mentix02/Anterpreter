@@ -12,9 +12,10 @@ namespace Anterpreter.Exercises
         public void Run()
         {
             
+            Console.Write("Generating random numbers... ");
             IList<int> numbers = GetRandomIntList(10);
 
-            Console.WriteLine("Numbers: ");
+            Console.Write("done.\nNumbers: ");
             PrintIEnumerable(numbers);
 
             Console.WriteLine("\nOdd numbers without curly braces: ");
